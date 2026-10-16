@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hazara Hotel - Complete POS System</title>
+    <title>Hazara Hotel - Ultimate POS & Management</title>
     <style>
         * { box-sizing: border-box; font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        body { background-color: #f4f6f9; color: #333; }
-        header { background-color: #1e293b; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        body { background-color: #f1f5f9; color: #333; }
+        header { background-color: #0f172a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         header h1 { font-size: 20px; }
-        nav { background: #334155; display: flex; overflow-x: auto; }
-        nav button { background: none; border: none; color: white; padding: 14px 20px; cursor: pointer; font-size: 15px; white-space: nowrap; transition: 0.3s; }
+        nav { background: #1e293b; display: flex; overflow-x: auto; }
+        nav button { background: none; border: none; color: white; padding: 14px 18px; cursor: pointer; font-size: 14px; white-space: nowrap; transition: 0.3s; }
         nav button:hover, nav button.active { background-color: #f59e0b; font-weight: bold; color: #fff; }
         .container { padding: 15px; max-width: 1200px; margin: 0 auto; }
         .tab-content { display: none; }
@@ -18,39 +18,44 @@
         .pos-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 15px; }
         @media(max-width: 768px) { .pos-grid { grid-template-columns: 1fr; } }
         .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 15px; }
-        .section-title { font-size: 16px; font-weight: bold; color: #1e293b; margin: 15px 0 10px 0; border-bottom: 2px solid #f59e0b; padding-bottom: 5px; }
-        .menu-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-        .item-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; text-align: center; cursor: pointer; transition: 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .section-title { font-size: 15px; font-weight: bold; color: #0f172a; margin: 15px 0 10px 0; border-bottom: 2px solid #f59e0b; padding-bottom: 5px; }
+        .menu-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+        .item-card { background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; text-align: center; cursor: pointer; transition: 0.2s; }
         .item-card:hover { border-color: #f59e0b; background: #fffbeb; }
-        .item-card h4 { font-size: 13px; margin-bottom: 4px; color: #1e293b; }
+        .item-card h4 { font-size: 13px; margin-bottom: 4px; color: #0f172a; }
         .item-card p { font-size: 12px; color: #64748b; font-weight: bold; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #e2e8f0; padding: 8px; text-align: left; font-size: 13px; }
-        th { background-color: #f8fafc; color: #334155; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; font-size: 13px; }
+        th { background-color: #f8fafc; color: #1e293b; }
         .qty-btns button { padding: 2px 6px; background: #cbd5e1; border: none; cursor: pointer; font-weight: bold; border-radius: 3px; }
-        .qty-btns button:hover { background: #94a3b8; }
         .btn { background: #10b981; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-size: 15px; width: 100%; margin-top: 10px; font-weight: bold; }
+        .btn-sm { padding: 6px 10px; font-size: 12px; width: auto; margin-top: 5px; }
         .btn-danger { background: #ef4444; }
-        input, select { width: 100%; padding: 8px; margin: 5px 0 12px 0; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+        .btn-warning { background: #f59e0b; color: white; }
+        input, select { width: 100%; padding: 8px; margin: 5px 0 10px 0; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
         .total-box { font-size: 16px; font-weight: bold; margin-top: 10px; display: flex; justify-content: space-between; }
+        
+        /* Thermal Receipt Style */
         @media print {
             body * { visibility: hidden; }
             #printable-receipt, #printable-receipt * { visibility: visible; }
-            #printable-receipt { position: absolute; left: 0; top: 0; width: 100%; padding: 15px; background: white; }
+            #printable-receipt { position: absolute; left: 0; top: 0; width: 80mm; padding: 5px; background: white; font-family: monospace; font-size: 12px; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Hazara Hotel - POS</h1>
+        <h1>Hazara Hotel Management</h1>
         <span id="current-time" style="font-size: 12px;"></span>
     </header>
 
     <nav>
-        <button class="active" onclick="switchTab(event, 'pos-tab')">🛒 Billing & POS</button>
-        <button onclick="switchTab(event, 'menu-tab')">📋 Menu & Rates</button>
-        <button onclick="switchTab(event, 'reports-tab')">📊 Sales Reports</button>
+        <button class="active" onclick="switchTab(event, 'pos-tab')">🛒 POS Billing</button>
+        <button onclick="switchTab(event, 'menu-tab')">📋 Menu & Price Edit</button>
+        <button onclick="switchTab(event, 'inventory-tab')">📦 Inventory & Stock</button>
+        <button onclick="switchTab(event, 'workers-tab')">👷 Workers & Payroll</button>
+        <button onclick="switchTab(event, 'reports-tab')">📊 Sales & Reports</button>
     </nav>
 
     <div class="container">
@@ -59,37 +64,23 @@
             <div class="pos-grid">
                 <div>
                     <div class="card">
-                        <h3>Hazara Hotel Menu</h3>
+                        <h3>Menu Quick Order</h3>
                         <input type="text" id="search-box" placeholder="Search dish..." onkeyup="filterMenu()">
-                        
-                        <div class="section-title">Karahi & Handi</div>
-                        <div class="menu-items" id="karahi-container"></div>
-
-                        <div class="section-title">BBQ & Chops</div>
-                        <div class="menu-items" id="bbq-container"></div>
-
-                        <div class="section-title">Desi & Mix Items</div>
-                        <div class="menu-items" id="desi-container"></div>
+                        <div class="section-items" id="pos-menu-container" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:10px; margin-top:10px;"></div>
                     </div>
                 </div>
                 <div>
                     <div class="card">
-                        <h3>Current Order Bill</h3>
+                        <h3>Current Bill</h3>
                         <label>Order Type:</label>
                         <select id="order-type">
                             <option value="Dine-in">Dine-in</option>
                             <option value="Parcel">Parcel / Takeaway</option>
                         </select>
-                        <div style="max-height: 250px; overflow-y: auto;">
+                        <div style="max-height: 220px; overflow-y: auto;">
                             <table>
                                 <thead>
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Price</th>
-                                        <th>Qty</th>
-                                        <th>Total</th>
-                                        <th>X</th>
-                                    </tr>
+                                    <tr><th>Item</th><th>Price</th><th>Qty</th><th>Total</th><th>X</th></tr>
                                 </thead>
                                 <tbody id="cart-items"></tbody>
                             </table>
@@ -98,21 +89,54 @@
                             <span>Grand Total:</span>
                             <span>PKR <span id="grand-total">0</span></span>
                         </div>
-                        <button class="btn" onclick="checkout()">Print Invoice & Pay</button>
+                        <button class="btn" onclick="checkout()">Print Thermal Bill</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Menu Rates Tab -->
+        <!-- Menu & Price Edit Tab -->
         <div id="menu-tab" class="tab-content">
             <div class="card">
-                <h3>Complete Menu & Prices</h3>
+                <h3>Menu & Price Management</h3>
+                <p style="font-size: 13px; color: #64748b; margin-bottom: 10px;">Edit prices directly and click update. Changes will apply immediately to POS.</p>
                 <table>
                     <thead>
-                        <tr><th>Item Name</th><th>Category</th><th>Price (PKR)</th></tr>
+                        <tr><th>Item Name</th><th>Category</th><th>Price (PKR)</th><th>Action</th></tr>
                     </thead>
-                    <tbody id="full-menu-table"></tbody>
+                    <tbody id="menu-edit-table"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Inventory & Stock Tab -->
+        <div id="inventory-tab" class="tab-content">
+            <div class="card">
+                <h3>Stock & Inventory Status</h3>
+                <p id="low-stock-alert" style="background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 6px; margin-bottom: 10px; font-weight: bold; display:none;"></p>
+                <table>
+                    <thead>
+                        <tr><th>Item / Ingredient</th><th>Stock Qty</th><th>Min Required</th><th>Status</th><th>Update</th></tr>
+                    </thead>
+                    <tbody id="inventory-table"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Workers & Daily Payroll Tab -->
+        <div id="workers-tab" class="tab-content">
+            <div class="card">
+                <h3>Workers Daily Attendance & Payments</h3>
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                    <input type="text" id="worker-name" placeholder="Worker Name">
+                    <input type="number" id="worker-wage" placeholder="Daily Wage (PKR)">
+                    <button class="btn" onclick="addWorker()" style="margin-top: 5px;">Add Worker</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Worker Name</th><th>Daily Wage</th><th>Status Today</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="workers-table"></tbody>
                 </table>
             </div>
         </div>
@@ -120,213 +144,48 @@
         <!-- Reports Tab -->
         <div id="reports-tab" class="tab-content">
             <div class="card">
-                <h3>Sales & Revenue Summary</h3>
-                <p style="font-size: 22px; font-weight: bold; color: #10b981; margin-top: 10px;">Total Revenue: PKR <span id="total-sales">0</span></p>
-                <button class="btn btn-danger" onclick="resetSales()" style="margin-top: 20px; width: auto;">Reset Sales Data</button>
+                <h3>Sales & Financial Summary</h3>
+                <p style="font-size: 20px; font-weight: bold; color: #10b981; margin-top: 10px;">Total Sales Revenue: PKR <span id="total-sales">0</span></p>
+                <button class="btn btn-danger btn-sm" onclick="resetSales()" style="margin-top: 15px;">Reset Sales Data</button>
             </div>
         </div>
     </div>
 
-    <!-- Hidden Receipt for Printing -->
+    <!-- Hidden Thermal Receipt (80mm / 58mm POS Printer) -->
     <div id="printable-receipt" style="display:none;">
         <div style="text-align: center;">
-            <h2>Hazara Hotel</h2>
+            <h3>HAZARA HOTEL</h3>
             <p>Main Highway, Abbottabad</p>
-            <p>Phone: +92 300 0000000</p>
-            <hr style="margin: 10px 0; border: dashed 1px #333;">
+            <p>Ph: 0300-0000000</p>
+            <p>--------------------------------</p>
         </div>
-        <p><strong>Order ID:</strong> <span id="rec-id"></span></p>
-        <p><strong>Date:</strong> <span id="rec-date"></span></p>
-        <p><strong>Type:</strong> <span id="rec-type"></span></p>
-        <hr style="margin: 10px 0; border: dashed 1px #333;">
-        <table style="width: 100%; font-size: 12px;">
-            <thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Amt</th></tr></thead>
+        <p>Order ID: <span id="rec-id"></span></p>
+        <p>Date: <span id="rec-date"></span></p>
+        <p>Type: <span id="rec-type"></span></p>
+        <p>--------------------------------</p>
+        <table style="width:100%; font-size:11px;">
+            <thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
             <tbody id="rec-items"></tbody>
         </table>
-        <hr style="margin: 10px 0; border: dashed 1px #333;">
-        <h3>Grand Total: PKR <span id="rec-total"></span></h3>
-        <p style="text-align: center; margin-top: 15px;">Thanks for your visit!</p>
+        <p>--------------------------------</p>
+        <h3 style="text-align: right;">GRAND TOTAL: PKR <span id="rec-total"></span></h3>
+        <p style="text-align: center; margin-top: 10px;">Thank You! Visit Again</p>
     </div>
 
     <script>
-        const menu = [
-            // Karahi & Handi
-            { name: "Chicken Karahi (Full)", price: 1800, category: "Karahi" },
-            { name: "Chicken Karahi (Half)", price: 1000, category: "Karahi" },
-            { name: "Chicken Makhani Karahi (Full)", price: 1900, category: "Karahi" },
-            { name: "Chicken White Karahi (Full)", price: 1900, category: "Karahi" },
-            { name: "Chicken Achari Karahi (Full)", price: 1850, category: "Karahi" },
-            { name: "Mutton Karahi (Full)", price: 2800, category: "Karahi" },
-            { name: "Mutton White Karahi (Full)", price: 2900, category: "Karahi" },
-            { name: "Chicken Handi (Full)", price: 1750, category: "Handi" },
-            { name: "Chicken Ginger (Full)", price: 1750, category: "Handi" },
-            { name: "Hazara Special Handi (Full)", price: 2100, category: "Handi" },
-            { name: "Chicken Qeema Masala", price: 500, category: "Desi" },
-            
-            // BBQ & Chops
-            { name: "Chicken Tikka Boti", price: 400, category: "BBQ" },
-            { name: "Malai Boti", price: 450, category: "BBQ" },
-            { name: "Chicken Seekh Kebab", price: 350, category: "BBQ" },
-            { name: "Reshmi Kebab", price: 400, category: "BBQ" },
-            { name: "Chest Piece Fry", price: 350, category: "BBQ" },
-            { name: "Leg Piece Fry", price: 330, category: "BBQ" },
-            
-            // Mix & Others
-            { name: "Daal Mash", price: 300, category: "Mix" },
-            { name: "Daal Anda Fry", price: 350, category: "Mix" },
-            { name: "Aloo Qeema", price: 450, category: "Mix" },
-            { name: "Kadhi Pakora", price: 300, category: "Mix" },
-            { name: "Qorma (Full)", price: 500, category: "Mix" },
-            { name: "Roti / Naan", price: 20, category: "Mix" },
-            { name: "Raita", price: 60, category: "Mix" },
-            { name: "Salad", price: 50, category: "Mix" },
-            { name: "Cold Drink", price: 120, category: "Mix" },
-            { name: "Tea", price: 80, category: "Mix" },
-            { name: "Mineral Water", price: 60, category: "Mix" }
+        // Default Data
+        let menu = JSON.parse(localStorage.getItem('hazara_menu')) || [
+            { id: 1, name: "Chicken Karahi (Full)", category: "Karahi", price: 1800 },
+            { id: 2, name: "Chicken Karahi (Half)", category: "Karahi", price: 1000 },
+            { id: 3, name: "Mutton Karahi (Full)", category: "Karahi", price: 2800 },
+            { id: 4, name: "Chicken Handi (Full)", category: "Handi", price: 1750 },
+            { id: 5, name: "Chicken Qeema Masala", category: "Desi", price: 500 },
+            { id: 6, name: "Chicken Tikka Boti", category: "BBQ", price: 400 },
+            { id: 7, name: "Malai Boti", category: "BBQ", price: 450 },
+            { id: 8, name: "Daal Mash", category: "Mix", price: 300 },
+            { id: 9, name: "Roti / Naan", category: "Mix", price: 20 },
+            { id: 10, name: "Cold Drink", category: "Beverages", price: 120 },
+            { id: 11, name: "Salad", category: "Sides", price: 50 }
         ];
 
-        let cart = [];
-        let totalSales = localStorage.getItem('hazara_sales') ? parseInt(localStorage.getItem('hazara_sales')) : 0;
-        document.getElementById('total-sales').innerText = totalSales;
-
-        function loadMenu() {
-            const karahiContainer = document.getElementById('karahi-container');
-            const bbqContainer = document.getElementById('bbq-container');
-            const desiContainer = document.getElementById('desi-container');
-            const tableBody = document.getElementById('full-menu-table');
-
-            karahiContainer.innerHTML = "";
-            bbqContainer.innerHTML = "";
-            desiContainer.innerHTML = "";
-            tableBody.innerHTML = "";
-
-            menu.forEach((item, index) => {
-                let cardHTML = `
-                    <div class="item-card" onclick="addToCart(${index})">
-                        <h4>${item.name}</h4>
-                        <p>Rs. ${item.price}</p>
-                    </div>`;
-
-                if (item.category === 'Karahi' || item.category === 'Handi') {
-                    karahiContainer.innerHTML += cardHTML;
-                } else if (item.category === 'BBQ') {
-                    bbqContainer.innerHTML += cardHTML;
-                } else {
-                    desiContainer.innerHTML += cardHTML;
-                }
-
-                tableBody.innerHTML += `
-                    <tr>
-                        <td>${item.name}</td>
-                        <td>${item.category}</td>
-                        <td>${item.price}</td>
-                    </tr>`;
-            });
-        }
-
-        function filterMenu() {
-            let query = document.getElementById('search-box').value.toLowerCase();
-            let cards = document.getElementsByClassName('item-card');
-            menu.forEach((item, index) => {
-                if (item.name.toLowerCase().includes(query)) {
-                    cards[index].style.display = "block";
-                } else {
-                    cards[index].style.display = "none";
-                }
-            });
-        }
-
-        function addToCart(index) {
-            let item = menu[index];
-            let existing = cart.find(i => i.name === item.name);
-            if (existing) {
-                existing.qty++;
-            } else {
-                cart.push({ ...item, qty: 1 });
-            }
-            updateCart();
-        }
-
-        function changeQty(index, change) {
-            cart[index].qty += change;
-            if (cart[index].qty <= 0) {
-                cart.splice(index, 1);
-            }
-            updateCart();
-        }
-
-        function updateCart() {
-            let tbody = document.getElementById('cart-items');
-            tbody.innerHTML = "";
-            let total = 0;
-            cart.forEach((item, index) => {
-                let subtotal = item.price * item.qty;
-                total += subtotal;
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${item.name}</td>
-                        <td>${item.price}</td>
-                        <td class="qty-btns">
-                            <button onclick="changeQty(${index}, -1)">-</button>
-                            ${item.qty}
-                            <button onclick="changeQty(${index}, 1)">+</button>
-                        </td>
-                        <td>${subtotal}</td>
-                        <td><button onclick="changeQty(${index}, -${item.qty})" style="background:#ef4444; color:#fff; border:none; padding:2px 5px; border-radius:3px;">X</button></td>
-                    </tr>`;
-            });
-            document.getElementById('grand-total').innerText = total;
-        }
-
-        function checkout() {
-            if (cart.length === 0) {
-                alert('Cart is empty! Please select items first.');
-                return;
-            }
-            let total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
-            totalSales += total;
-            localStorage.setItem('hazara_sales', totalSales);
-            document.getElementById('total-sales').innerText = totalSales;
-
-            document.getElementById('rec-id').innerText = Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('rec-date').innerText = new Date().toLocaleString();
-            document.getElementById('rec-type').innerText = document.getElementById('order-type').value;
-            document.getElementById('rec-total').innerText = total;
-            
-            let recItems = document.getElementById('rec-items');
-            recItems.innerHTML = "";
-            cart.forEach(i => {
-                recItems.innerHTML += `<tr><td>${i.name}</td><td>${i.qty}</td><td>${i.price}</td><td>${i.price * i.qty}</td></tr>`;
-            });
-
-            window.print();
-            cart = [];
-            updateCart();
-        }
-
-        function resetSales() {
-            if (confirm('Are you sure you want to reset sales data?')) {
-                totalSales = 0;
-                localStorage.setItem('hazara_sales', 0);
-                document.getElementById('total-sales').innerText = 0;
-            }
-        }
-
-        function switchTab(evt, tabName) {
-            let contents = document.getElementsByClassName('tab-content');
-            for (let c of contents) c.classList.remove('active');
-            let buttons = document.querySelectorAll('nav button');
-            for (let b of buttons) b.classList.remove('active');
-            document.getElementById(tabName).classList.add('active');
-            evt.currentTarget.classList.add('active');
-        }
-
-        setInterval(() => {
-            let d = new Date();
-            document.getElementById('current-time').innerText = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
-        }, 1000);
-
-        loadMenu();
-    </script>
-</body>
-</html>
+        let inventory = JSON.
