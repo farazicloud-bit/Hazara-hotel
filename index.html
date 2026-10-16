@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ہਜ਼ਾਰਾ ਹੋਟਲ - POS سسٹم</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; }
+        body { background-color: #f4f4f4; color: #333; direction: rtl; text-align: right; }
+        header { background-color: #2c3e50; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        header h1 { font-size: 22px; }
+        nav { background: #333; display: flex; overflow-x: auto; }
+        nav button { background: none; border: none; color: white; padding: 14px 20px; cursor: pointer; font-size: 16px; white-space: nowrap; transition: 0.3s; }
+        nav button:hover, nav button.active { background-color: #e67e22; font-weight: bold; }
+        .container { padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .pos-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        @media(max-width: 768px) { .pos-grid { grid-template-columns: 1fr; } }
+        .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .menu-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+        .item-btn { background: #fff; border: 2px solid #e0e0e0; padding: 12px; border-radius: 6px; text-align: center; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .item-btn:hover { background: #fbe3d2; border-color: #e67e22; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: right; }
+        th { background-color: #f2f2f2; }
+        .btn { background: #27ae60; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; margin-top: 10px; font-weight: bold; }
+        .btn-danger { background: #c0392b; }
+        input, select { width: 100%; padding: 8px; margin: 5px 0 15px 0; border: 1px solid #ccc; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🏨 ہਜ਼ਾਰਾ ਹੋਟਲ - POS بلਿੰਗ ਸਿਸਟਮ</h1>
+        <span id="current-time"></span>
+    </header>
+
+    <nav>
+        <button class="active" onclick="switchTab(event, 'pos-tab')">🛒 POS بلਿੰਗ</button>
+        <button onclick="switchTab(event, 'menu-tab')">📋 مینیو ریٹس</button>
+        <button onclick="switchTab(event, 'reports-tab')">📊 سیلز رپورٹ</button>
+    </nav>
+
+    <div class="container">
+        <!-- POS Tab -->
+        <div id="pos-tab" class="tab-content active">
+            <div class="pos-grid">
+                <div>
+                    <div class="card">
+                        <h3>مینیو آئٹمز</h3>
+                        <div class="menu-items" id="menu-container">
+                            <!-- Items will load here -->
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card">
+                        <h3>current آرڈر بل</h3>
+                        <label>آرڈر کی قسم:</label>
+                        <select id="order-type">
+                            <option value="Dine-in">ڈائن ان (Dine-in)</option>
+                            <option value="Parcel">پارسل (Parcel)</option>
+                        </select>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>آئٹم</th>
+                                    <th>قیمت</th>
+                                    <th>تعداد</th>
+                                    <th>کل</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bill-items">
+                                <!-- Cart Items -->
+                            </tbody>
+                        </table>
+                        <h3 style="margin-top: 15px;">کل رقم: PKR <span id="grand-total">0</span></h3>
+                        <button class="btn" onclick="printBill()">پرنٹ بل / آرڈر</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Rates Tab -->
+        <div id="menu-tab" class="tab-content">
+            <div class="card">
+                <h3>ہਜ਼ਾਰਾ ਹੋਟਲ - مینیو اور ریٹس</h3>
+                <table>
+                    <tr><th>آئٹم کا نام</th><th>قیمت (PKR)</th></tr>
+                    <tr><td>سپیشل چکن کڑاہی (فی کلو)</td><td>1,800</td></tr>
+                    <tr><td>قیمہ (فل پلیٹ)</td><td>500</td></tr>
+                    <tr><td>کورمہ (فل پلیٹ)</td><td>350</td></tr>
+                    <tr><td>روٹی</td><td>20</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reports-tab" class="tab-content">
+            <div class="card">
+                <h3>آج کی کل سیلز</h3>
+                <p style="font-size: 24px; font-weight: bold; color: #27ae60; margin-top: 10px;">PKR <span id="total-sales">0</span></p>
+                <button class="btn btn-danger" onclick="resetSales()" style="margin-top: 20px; width: auto;">ڈیٹا ری سیٹ کریں</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const menu = [
+            { name: "চکن کڑاہی (1kg)", price: 1800 },
+            { name: "قیمہ (فل)", price: 500 },
+            { name: "کورمہ (فل)", price: 350 },
+            { name: "روٹی", price: 20 },
+            { name: "کولڈ ڈرिंक", price: 120 },
+            { name: "سلاد", price: 50 }
+        ];
+
+        let cart = [];
+        let totalSales = localStorage.getItem('hazara_sales') ? parseInt(localStorage.getItem('hazara_sales')) : 0;
+        document.getElementById('total-sales').innerText = totalSales;
+
+        function loadMenu() {
+            const container = document.getElementById('menu-container');
+            menuforEachIndex = "";
+            menu.forEach((item, index) => {
+                container.innerHTML += `<div class="item-btn" onclick="addToCart(${index})">${item.name}<br><small>Rs. ${item.price}</small></div>`;
+            });
+        }
+
+        function addToCart(index) {
+            let item = menu[index];
+            let existing = cart.find(i => i.name === item.name);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+            updateBill();
+        }
+
+        function updateBill() {
+            let tbody = document.getElementById('bill-items');
+            tbody.innerHTML = "";
+            let total = 0;
+            cart.forEach(item => {
+                let subtotal = item.price * item.qty;
+                total += subtotal;
+                tbody.innerHTML += `<tr><td>${item.name}</td><td>${item.price}</td><td>${item.qty}</td><td>${subtotal}</td></tr>`;
+            });
+            document.getElementById('grand-total').innerText = total;
+        }
+
+        function printBill() {
+            if(cart.length === 0) {
+                alert('پہلے مینیو سے کوئی آئٹم سلیکٹ کریں!');
+                return;
+            }
+            let total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            totalSales += total;
+            localStorage.setItem('hazara_sales', totalSales);
+            document.getElementById('total-sales').innerText = totalSales;
+            
+            window.print();
+            cart = [];
+            updateBill();
+        }
+
+        function switchTab(evt, tabName) {
+            let contents = document.getElementsByClassName('tab-content');
+            for (let c of contents) c.classList.remove('active');
+            let buttons = document.getElementsByTagName('button');
+            for (let b of buttons) b.classList.remove('active');
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        setInterval(() => {
+            let d = new Date();
+            document.getElementById('current-time').innerText = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+        }, 1000);
+
+        loadMenu();
+    </script>
+</body>
+</html>
