@@ -3,155 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hazara Hotel - Ultimate POS & Management</title>
+    <title>Hazara Hotel - Ultimate Management System</title>
     <style>
         * { box-sizing: border-box; font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        body { background-color: #f1f5f9; color: #333; }
-        header { background-color: #0f172a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        header h1 { font-size: 20px; }
-        nav { background: #1e293b; display: flex; overflow-x: auto; }
-        nav button { background: none; border: none; color: white; padding: 14px 18px; cursor: pointer; font-size: 14px; white-space: nowrap; transition: 0.3s; }
-        nav button:hover, nav button.active { background-color: #f59e0b; font-weight: bold; color: #fff; }
+        body { background-color: #f8fafc; color: #1e293b; }
+        header { background-color: #0f172a; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { font-size: 18px; }
+        nav { background: #1e293b; display: flex; overflow-x: auto; border-top: 1px solid #334155; }
+        nav button { background: none; border: none; color: white; padding: 12px 15px; cursor: pointer; font-size: 13px; white-space: nowrap; }
+        nav button:hover, nav button.active { background-color: #f59e0b; font-weight: bold; }
         .container { padding: 15px; max-width: 1200px; margin: 0 auto; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .pos-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 15px; }
-        @media(max-width: 768px) { .pos-grid { grid-template-columns: 1fr; } }
+        .grid-2 { display: grid; grid-template-columns: 1.5fr 1fr; gap: 15px; }
+        @media(max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
         .card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 15px; }
-        .section-title { font-size: 15px; font-weight: bold; color: #0f172a; margin: 15px 0 10px 0; border-bottom: 2px solid #f59e0b; padding-bottom: 5px; }
-        .menu-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-        .item-card { background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .title { font-size: 15px; font-weight: bold; color: #0f172a; margin-bottom: 10px; border-bottom: 2px solid #f59e0b; padding-bottom: 5px; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+        .item-card { background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; text-align: center; cursor: pointer; }
         .item-card:hover { border-color: #f59e0b; background: #fffbeb; }
-        .item-card h4 { font-size: 13px; margin-bottom: 4px; color: #0f172a; }
-        .item-card p { font-size: 12px; color: #64748b; font-weight: bold; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; font-size: 13px; }
-        th { background-color: #f8fafc; color: #1e293b; }
-        .qty-btns button { padding: 2px 6px; background: #cbd5e1; border: none; cursor: pointer; font-weight: bold; border-radius: 3px; }
-        .btn { background: #10b981; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-size: 15px; width: 100%; margin-top: 10px; font-weight: bold; }
-        .btn-sm { padding: 6px 10px; font-size: 12px; width: auto; margin-top: 5px; }
+        th, td { border: 1px solid #cbd5e1; padding: 7px; text-align: left; font-size: 12px; }
+        th { background-color: #f1f5f9; }
+        .btn { background: #10b981; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 14px; width: 100%; margin-top: 8px; font-weight: bold; }
+        .btn-sm { padding: 5px 8px; font-size: 11px; width: auto; }
         .btn-danger { background: #ef4444; }
         .btn-warning { background: #f59e0b; color: white; }
-        input, select { width: 100%; padding: 8px; margin: 5px 0 10px 0; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
-        .total-box { font-size: 16px; font-weight: bold; margin-top: 10px; display: flex; justify-content: space-between; }
-        
-        /* Thermal Receipt Style */
+        input, select { width: 100%; padding: 7px; margin: 4px 0 10px 0; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; }
         @media print {
             body * { visibility: hidden; }
             #printable-receipt, #printable-receipt * { visibility: visible; }
-            #printable-receipt { position: absolute; left: 0; top: 0; width: 80mm; padding: 5px; background: white; font-family: monospace; font-size: 12px; }
+            #printable-receipt { position: absolute; left: 0; top: 0; width: 80mm; padding: 10px; background: white; font-family: monospace; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Hazara Hotel Management</h1>
-        <span id="current-time" style="font-size: 12px;"></span>
+        <h1>Hazara Hotel ERP & POS</h1>
+        <span id="current-time" style="font-size: 11px;"></span>
     </header>
 
     <nav>
-        <button class="active" onclick="switchTab(event, 'pos-tab')">🛒 POS Billing</button>
-        <button onclick="switchTab(event, 'menu-tab')">📋 Menu & Price Edit</button>
-        <button onclick="switchTab(event, 'inventory-tab')">📦 Inventory & Stock</button>
-        <button onclick="switchTab(event, 'workers-tab')">👷 Workers & Payroll</button>
-        <button onclick="switchTab(event, 'reports-tab')">📊 Sales & Reports</button>
+        <button class="active" onclick="switchTab(event, 'pos-tab')">🛒 POS / Billing</button>
+        <button onclick="switchTab(event, 'dining-tab')">🪑 Dining Tables</button>
+        <button onclick="switchTab(event, 'stock-tab')">📦 Inward / Outward Stock</button>
+        <button onclick="switchTab(event, 'vendor-tab')">🤝 Vendor Accounts</button>
+        <button onclick="switchTab(event, 'payroll-tab')">👷 Workers Payroll</button>
+        <button onclick="switchTab(event, 'reports-tab')">📊 Sales Reports</button>
     </nav>
 
     <div class="container">
-        <!-- POS Tab -->
+        <!-- 1. POS Tab -->
         <div id="pos-tab" class="tab-content active">
-            <div class="pos-grid">
-                <div>
-                    <div class="card">
-                        <h3>Menu Quick Order</h3>
-                        <input type="text" id="search-box" placeholder="Search dish..." onkeyup="filterMenu()">
-                        <div class="section-items" id="pos-menu-container" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:10px; margin-top:10px;"></div>
-                    </div>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="title">Menu Items</div>
+                    <input type="text" id="pos-search" placeholder="Search dish..." onkeyup="filterPOSMenu()">
+                    <div class="menu-grid" id="pos-menu-items" style="margin-top:10px;"></div>
                 </div>
-                <div>
-                    <div class="card">
-                        <h3>Current Bill</h3>
-                        <label>Order Type:</label>
-                        <select id="order-type">
-                            <option value="Dine-in">Dine-in</option>
-                            <option value="Parcel">Parcel / Takeaway</option>
+                <div class="card">
+                    <div class="title">Current Order Bill</div>
+                    <label>Order Type:</label>
+                    <select id="order-type" onchange="toggleTableSelect()">
+                        <option value="Parcel">Parcel / Takeaway</option>
+                        <option value="Dine-in">Dine-in (Dining)</option>
+                    </select>
+                    <div id="table-select-box" style="display:none;">
+                        <label>Select Table:</label>
+                        <select id="table-number">
+                            <option value="Table 1">Table 1</option>
+                            <option value="Table 2">Table 2</option>
+                            <option value="Table 3">Table 3</option>
+                            <option value="Table 4">Table 4</option>
                         </select>
-                        <div style="max-height: 220px; overflow-y: auto;">
-                            <table>
-                                <thead>
-                                    <tr><th>Item</th><th>Price</th><th>Qty</th><th>Total</th><th>X</th></tr>
-                                </thead>
-                                <tbody id="cart-items"></tbody>
-                            </table>
-                        </div>
-                        <div class="total-box">
-                            <span>Grand Total:</span>
-                            <span>PKR <span id="grand-total">0</span></span>
-                        </div>
-                        <button class="btn" onclick="checkout()">Print Thermal Bill</button>
                     </div>
+                    <div style="max-height: 200px; overflow-y: auto;">
+                        <table>
+                            <thead><tr><th>Item</th><th>Price</th><th>Qty</th><th>Total</th><th>X</th></tr></thead>
+                            <tbody id="cart-items"></tbody>
+                        </table>
+                    </div>
+                    <div style="font-size: 15px; font-weight: bold; margin-top: 10px; display: flex; justify-content: space-between;">
+                        <span>Grand Total:</span><span>PKR <span id="grand-total">0</span></span>
+                    </div>
+                    <button class="btn" onclick="checkout()">Print Thermal Bill & Save</button>
                 </div>
             </div>
         </div>
 
-        <!-- Menu & Price Edit Tab -->
-        <div id="menu-tab" class="tab-content">
+        <!-- 2. Dining Tables Status Tab -->
+        <div id="dining-tab" class="tab-content">
             <div class="card">
-                <h3>Menu & Price Management</h3>
-                <p style="font-size: 13px; color: #64748b; margin-bottom: 10px;">Edit prices directly and click update. Changes will apply immediately to POS.</p>
-                <table>
-                    <thead>
-                        <tr><th>Item Name</th><th>Category</th><th>Price (PKR)</th><th>Action</th></tr>
-                    </thead>
-                    <tbody id="menu-edit-table"></tbody>
-                </table>
+                <div class="title">Active Dining Tables Management</div>
+                <div id="dining-tables-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:15px; margin-top:10px;"></div>
             </div>
         </div>
 
-        <!-- Inventory & Stock Tab -->
-        <div id="inventory-tab" class="tab-content">
+        <!-- 3. Stock Inward / Outward Tab -->
+        <div id="stock-tab" class="tab-content">
             <div class="card">
-                <h3>Stock & Inventory Status</h3>
-                <p id="low-stock-alert" style="background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 6px; margin-bottom: 10px; font-weight: bold; display:none;"></p>
+                <div class="title">Store Inward (New Stock Arrival)</div>
+                <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:10px;">
+                    <input type="text" id="in-item" placeholder="Item Name (e.g. Chicken kg)">
+                    <input type="number" id="in-qty" placeholder="Quantity">
+                    <button class="btn" onclick="addInwardStock()" style="margin-top:4px;">Add Inward</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="title">Current Inventory & Outward Log</div>
                 <table>
-                    <thead>
-                        <tr><th>Item / Ingredient</th><th>Stock Qty</th><th>Min Required</th><th>Status</th><th>Update</th></tr>
-                    </thead>
+                    <thead><tr><th>Item Name</th><th>Available Stock</th><th>Status</th></tr></thead>
                     <tbody id="inventory-table"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Workers & Daily Payroll Tab -->
-        <div id="workers-tab" class="tab-content">
+        <!-- 4. Vendor Accounts Tab -->
+        <div id="vendor-tab" class="tab-content">
             <div class="card">
-                <h3>Workers Daily Attendance & Payments</h3>
-                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin-bottom: 15px;">
-                    <input type="text" id="worker-name" placeholder="Worker Name">
-                    <input type="number" id="worker-wage" placeholder="Daily Wage (PKR)">
-                    <button class="btn" onclick="addWorker()" style="margin-top: 5px;">Add Worker</button>
+                <div class="title">Add Vendor / Supplier</div>
+                <div style="display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap:10px;">
+                    <input type="text" id="v-name" placeholder="Vendor Name">
+                    <input type="text" id="v-item" placeholder="Item Supplied">
+                    <input type="number" id="v-balance" placeholder="Balance Due (PKR)">
+                    <button class="btn" onclick="addVendor()" style="margin-top:4px;">Add Vendor</button>
                 </div>
                 <table>
-                    <thead>
-                        <tr><th>Worker Name</th><th>Daily Wage</th><th>Status Today</th><th>Action</th></tr>
-                    </thead>
-                    <tbody id="workers-table"></tbody>
+                    <thead><tr><th>Vendor Name</th><th>Item</th><th>Balance Due (Payable)</th><th>Action</th></tr></thead>
+                    <tbody id="vendor-table"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Reports Tab -->
+        <!-- 5. Workers Payroll Tab -->
+        <div id="payroll-tab" class="tab-content">
+            <div class="card">
+                <div class="title">Workers Daily Attendance & Wage Payroll</div>
+                <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:10px; margin-bottom:10px;">
+                    <input type="text" id="w-name" placeholder="Worker Name">
+                    <input type="number" id="w-wage" placeholder="Daily Wage (PKR)">
+                    <button class="btn" onclick="addWorker()" style="margin-top:4px;">Add Worker</button>
+                </div>
+                <table>
+                    <thead><tr><th>Worker Name</th><th>Daily Wage</th><th>Attendance Today</th><th>Action</th></tr></thead>
+                    <tbody id="payroll-table"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 6. Sales Reports Tab -->
         <div id="reports-tab" class="tab-content">
             <div class="card">
-                <h3>Sales & Financial Summary</h3>
-                <p style="font-size: 20px; font-weight: bold; color: #10b981; margin-top: 10px;">Total Sales Revenue: PKR <span id="total-sales">0</span></p>
+                <div class="title">Total Sales & Financial Overview</div>
+                <p style="font-size: 20px; font-weight: bold; color: #10b981; margin-top:10px;">Total Revenue: PKR <span id="total-sales">0</span></p>
                 <button class="btn btn-danger btn-sm" onclick="resetSales()" style="margin-top: 15px;">Reset Sales Data</button>
             </div>
         </div>
     </div>
 
-    <!-- Hidden Thermal Receipt (80mm / 58mm POS Printer) -->
+    <!-- Hidden Thermal Receipt Template -->
     <div id="printable-receipt" style="display:none;">
         <div style="text-align: center;">
             <h3>HAZARA HOTEL</h3>
@@ -161,7 +172,7 @@
         </div>
         <p>Order ID: <span id="rec-id"></span></p>
         <p>Date: <span id="rec-date"></span></p>
-        <p>Type: <span id="rec-type"></span></p>
+        <p>Type: <span id="rec-type"></span> | <span id="rec-table"></span></p>
         <p>--------------------------------</p>
         <table style="width:100%; font-size:11px;">
             <thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
@@ -173,19 +184,292 @@
     </div>
 
     <script>
-        // Default Data
-        let menu = JSON.parse(localStorage.getItem('hazara_menu')) || [
-            { id: 1, name: "Chicken Karahi (Full)", category: "Karahi", price: 1800 },
-            { id: 2, name: "Chicken Karahi (Half)", category: "Karahi", price: 1000 },
-            { id: 3, name: "Mutton Karahi (Full)", category: "Karahi", price: 2800 },
-            { id: 4, name: "Chicken Handi (Full)", category: "Handi", price: 1750 },
-            { id: 5, name: "Chicken Qeema Masala", category: "Desi", price: 500 },
-            { id: 6, name: "Chicken Tikka Boti", category: "BBQ", price: 400 },
-            { id: 7, name: "Malai Boti", category: "BBQ", price: 450 },
-            { id: 8, name: "Daal Mash", category: "Mix", price: 300 },
-            { id: 9, name: "Roti / Naan", category: "Mix", price: 20 },
-            { id: 10, name: "Cold Drink", category: "Beverages", price: 120 },
-            { id: 11, name: "Salad", category: "Sides", price: 50 }
+        let menu = [
+            { name: "Chicken Karahi (Full)", price: 1800 },
+            { name: "Chicken Karahi (Half)", price: 1000 },
+            { name: "Mutton Karahi (Full)", price: 2800 },
+            { name: "Chicken Handi (Full)", price: 1750 },
+            { name: "Chicken Qeema Masala", price: 500 },
+            { name: "Chicken Tikka Boti", price: 400 },
+            { name: "Malai Boti", price: 450 },
+            { name: "Daal Mash", price: 300 },
+            { name: "Roti / Naan", price: 20 },
+            { name: "Cold Drink", price: 120 },
+            { name: "Salad", price: 50 }
         ];
 
-        let inventory = JSON.
+        let cart = [];
+        let inventory = JSON.parse(localStorage.getItem('hazara_inv')) || [
+            { name: "Chicken (kg)", qty: 20 },
+            { name: "Mutton (kg)", qty: 5 },
+            { name: "Cooking Oil (liter)", qty: 15 },
+            { name: "Flour / Roti (kg)", qty: 30 }
+        ];
+
+        let vendors = JSON.parse(localStorage.getItem('hazara_vendors')) || [
+            { name: "Bashir Meat Supplier", item: "Chicken & Mutton", balance: 15000 },
+            { name: "Madina Grocery", item: "Oil & Spices", balance: 8500 }
+        ];
+
+        let workers = JSON.parse(localStorage.getItem('hazara_workers')) || [
+            { name: "Ali (Chef)", wage: 1200, present: true },
+            { name: "Usman (Waiter)", wage: 800, present: true }
+        ];
+
+        let activeTables = JSON.parse(localStorage.getItem('hazara_tables')) || {
+            "Table 1": { status: "Available", items: [] },
+            "Table 2": { status: "Available", items: [] },
+            "Table 3": { status: "Available", items: [] },
+            "Table 4": { status: "Available", items: [] }
+        };
+
+        let totalSales = parseInt(localStorage.getItem('hazara_sales')) || 0;
+        document.getElementById('total-sales').innerText = totalSales;
+
+        function initApp() {
+            loadPOSMenu();
+            loadInventory();
+            loadVendors();
+            loadWorkers();
+            loadDiningTables();
+        }
+
+        function loadPOSMenu() {
+            const container = document.getElementById('pos-menu-items');
+            container.innerHTML = "";
+            menu.forEach((item, index) => {
+                container.innerHTML += `
+                    <div class="item-card" onclick="addToCart(${index})">
+                        <h4 style="font-size:12px;">${item.name}</h4>
+                        <p style="font-size:11px; color:#64748b;">Rs. ${item.price}</p>
+                    </div>`;
+            });
+        }
+
+        function filterPOSMenu() {
+            let q = document.getElementById('pos-search').value.toLowerCase();
+            let cards = document.getElementsByClassName('item-card');
+            menu.forEach((item, index) => {
+                cards[index].style.display = item.name.toLowerCase().includes(q) ? "block" : "none";
+            });
+        }
+
+        function toggleTableSelect() {
+            let type = document.getElementById('order-type').value;
+            document.getElementById('table-select-box').style.display = type === 'Dine-in' ? 'block' : 'none';
+        }
+
+        function addToCart(index) {
+            let item = menu[index];
+            let existing = cart.find(i => i.name === item.name);
+            if(existing) existing.qty++; else cart.push({ ...item, qty: 1 });
+            updateCart();
+        }
+
+        function changeQty(index, val) {
+            cart[index].qty += val;
+            if(cart[index].qty <= 0) cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            let tbody = document.getElementById('cart-items');
+            tbody.innerHTML = "";
+            let total = 0;
+            cart.forEach((item, index) => {
+                let sub = item.price * item.qty;
+                total += sub;
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.price}</td>
+                        <td>
+                            <button onclick="changeQty(${index}, -1)" style="padding:1px 5px;">-</button>
+                            ${item.qty}
+                            <button onclick="changeQty(${index}, 1)" style="padding:1px 5px;">+</button>
+                        </td>
+                        <td>${sub}</td>
+                        <td><button onclick="changeQty(${index}, -${item.qty})" style="background:#ef4444; color:#fff; border:none; padding:1px 4px;">X</button></td>
+                    </tr>`;
+            });
+            document.getElementById('grand-total').innerText = total;
+        }
+
+        function checkout() {
+            if(cart.length === 0) { alert('Cart is empty!'); return; }
+            let total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+            totalSales += total;
+            localStorage.setItem('hazara_sales', totalSales);
+            document.getElementById('total-sales').innerText = totalSales;
+
+            let type = document.getElementById('order-type').value;
+            let tableName = type === 'Dine-in' ? document.getElementById('table-number').value : 'Takeaway';
+
+            if(type === 'Dine-in') {
+                activeTables[tableName] = { status: "Occupied", items: [...cart] };
+                localStorage.setItem('hazara_tables', JSON.stringify(activeTables));
+                loadDiningTables();
+            }
+
+            document.getElementById('rec-id').innerText = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('rec-date').innerText = new Date().toLocaleString();
+            document.getElementById('rec-type').innerText = type;
+            document.getElementById('rec-table').innerText = tableName;
+            document.getElementById('rec-total').innerText = total;
+
+            let recItems = document.getElementById('rec-items');
+            recItems.innerHTML = "";
+            cart.forEach(i => {
+                recItems.innerHTML += `<tr><td>${i.name}</td><td>${i.qty}</td><td>${i.price}</td><td>${i.price * i.qty}</td></tr>`;
+            });
+
+            window.print();
+            cart = [];
+            updateCart();
+        }
+
+        function loadDiningTables() {
+            let grid = document.getElementById('dining-tables-grid');
+            grid.innerHTML = "";
+            for(let t in activeTables) {
+                let table = activeTables[t];
+                let bg = table.status === 'Occupied' ? '#fee2e2' : '#f0fdf4';
+                let border = table.status === 'Occupied' ? '#ef4444' : '#10b981';
+                grid.innerHTML += `
+                    <div style="background:${bg}; border:2px solid ${border}; padding:12px; border-radius:8px;">
+                        <h4 style="color:#0f172a;">${t}</h4>
+                        <p style="font-size:12px; font-weight:bold; margin:5px 0;">Status: ${table.status}</p>
+                        <button class="btn btn-sm ${table.status==='Occupied'?'btn-danger':''}" onclick="clearTable('${t}')">${table.status==='Occupied'?'Clear Table':'Free'}</button>
+                    </div>`;
+            }
+        }
+
+        function clearTable(t) {
+            activeTables[t] = { status: "Available", items: [] };
+            localStorage.setItem('hazara_tables', JSON.stringify(activeTables));
+            loadDiningTables();
+        }
+
+        function loadInventory() {
+            let tbody = document.getElementById('inventory-table');
+            tbody.innerHTML = "";
+            inventory.forEach((inv) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${inv.name}</td>
+                        <td>${inv.qty}</td>
+                        <td><span style="color:green; font-weight:bold;">Available</span></td>
+                    </tr>`;
+            });
+        }
+
+        function addInwardStock() {
+            let name = document.getElementById('in-item').value;
+            let qty = parseInt(document.getElementById('in-qty').value);
+            if(name && !isNaN(qty)) {
+                let existing = inventory.find(i => i.name.toLowerCase() === name.toLowerCase());
+                if(existing) existing.qty += qty; else inventory.push({ name, qty });
+                localStorage.setItem('hazara_inv', JSON.stringify(inventory));
+                document.getElementById('in-item').value = "";
+                document.getElementById('in-qty').value = "";
+                loadInventory();
+                alert('Stock Inward recorded successfully!');
+            }
+        }
+
+        function loadVendors() {
+            let tbody = document.getElementById('vendor-table');
+            tbody.innerHTML = "";
+            vendors.forEach((v, idx) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${v.name}</td>
+                        <td>${v.item}</td>
+                        <td>PKR ${v.balance}</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="removeVendor(${idx})">Delete</button></td>
+                    </tr>`;
+            });
+        }
+
+        function addVendor() {
+            let name = document.getElementById('v-name').value;
+            let item = document.getElementById('v-item').value;
+            let balance = parseInt(document.getElementById('v-balance').value);
+            if(name && item && !isNaN(balance)) {
+                vendors.push({ name, item, balance });
+                localStorage.setItem('hazara_vendors', JSON.stringify(vendors));
+                document.getElementById('v-name').value = "";
+                document.getElementById('v-item').value = "";
+                document.getElementById('v-balance').value = "";
+                loadVendors();
+            }
+        }
+
+        function removeVendor(idx) {
+            vendors.splice(idx, 1);
+            localStorage.setItem('hazara_vendors', JSON.stringify(vendors));
+            loadVendors();
+        }
+
+        function loadWorkers() {
+            let tbody = document.getElementById('payroll-table');
+            tbody.innerHTML = "";
+            workers.forEach((w, idx) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${w.name}</td>
+                        <td>PKR ${w.wage}</td>
+                        <td><input type="checkbox" ${w.present?'checked':''} onclick="toggleAtt(${idx})"> Present</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="removeWorker(${idx})">Delete</button></td>
+                    </tr>`;
+            });
+        }
+
+        function addWorker() {
+            let name = document.getElementById('w-name').value;
+            let wage = parseInt(document.getElementById('w-wage').value);
+            if(name && !isNaN(wage)) {
+                workers.push({ name, wage, present: true });
+                localStorage.setItem('hazara_workers', JSON.stringify(workers));
+                document.getElementById('w-name').value = "";
+                document.getElementById('w-wage').value = "";
+                loadWorkers();
+            }
+        }
+
+        function toggleAtt(idx) {
+            workers[idx].present = !workers[idx].present;
+            localStorage.setItem('hazara_workers', JSON.stringify(workers));
+        }
+
+        function removeWorker(idx) {
+            workers.splice(idx, 1);
+            localStorage.setItem('hazara_workers', JSON.stringify(workers));
+            loadWorkers();
+        }
+
+        function resetSales() {
+            if(confirm('Reset total sales?')) {
+                totalSales = 0;
+                localStorage.setItem('hazara_sales', 0);
+                document.getElementById('total-sales').innerText = 0;
+            }
+        }
+
+        function switchTab(evt, tabName) {
+            let contents = document.getElementsByClassName('tab-content');
+            for(let c of contents) c.classList.remove('active');
+            let buttons = document.querySelectorAll('nav button');
+            for(let b of buttons) b.classList.remove('active');
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        setInterval(() => {
+            document.getElementById('current-time').innerText = new Date().toLocaleString();
+        }, 1000);
+
+        initApp();
+    </script>
+</body>
+</html>
